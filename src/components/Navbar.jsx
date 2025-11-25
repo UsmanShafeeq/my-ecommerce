@@ -6,14 +6,12 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
 
-  // Main Nav Links
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
     { name: "Cart", path: "/cart" },
   ];
 
-  // Categories dropdown
   const categories = [
     "Electronics",
     "Fashion",
@@ -23,12 +21,12 @@ export default function Navbar() {
     "Toys",
   ];
 
-  const cartCount = 3; // ← use context later
+  const cartCount = 3; // Placeholder, use context/state later
 
   return (
     <nav className="bg-white shadow-lg fixed w-full top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
-        
+
         {/* Logo */}
         <Link
           to="/"
@@ -46,25 +44,25 @@ export default function Navbar() {
           />
         </div>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-6">
 
           {/* Categories Dropdown */}
           <div className="relative">
             <button
               onClick={() => setCategoryOpen(!categoryOpen)}
-              className="flex items-center gap-1 font-semibold hover:text-blue-600"
+              className="flex items-center gap-1 font-semibold hover:text-blue-600 transition"
             >
               Categories <FiChevronDown />
             </button>
 
             {categoryOpen && (
-              <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-lg p-2">
+              <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-lg p-2 animate-fade-in">
                 {categories.map((cat) => (
                   <Link
                     key={cat}
                     to={`/category/${cat.toLowerCase()}`}
-                    className="block px-3 py-2 rounded-md hover:bg-blue-100"
+                    className="block px-3 py-2 rounded-md hover:bg-blue-100 transition"
                   >
                     {cat}
                   </Link>
@@ -73,7 +71,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Map Navigation Links */}
+          {/* Navigation Links */}
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -84,21 +82,20 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Cart Icon */}
+          {/* Cart */}
           <Link to="/cart" className="relative">
-            <FiShoppingCart className="text-2xl hover:text-blue-600" />
+            <FiShoppingCart className="text-2xl hover:text-blue-600 transition" />
             <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1 rounded">
               {cartCount}
             </span>
           </Link>
 
-          {/* Login/User Button */}
+          {/* Login/User */}
           <Link
             to="/login"
-            className="flex items-center gap-1 font-semibold hover:text-blue-600"
+            className="flex items-center gap-1 font-semibold hover:text-blue-600 transition"
           >
-            <FiUser className="text-xl" />
-            Login
+            <FiUser className="text-xl" /> Login
           </Link>
         </div>
 
@@ -113,9 +110,9 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white shadow-lg p-4 space-y-4">
+        <div className="md:hidden bg-white shadow-lg p-4 space-y-4 animate-fade-in">
 
-          {/* Search Bar */}
+          {/* Search */}
           <input
             type="text"
             placeholder="Search products..."
@@ -137,7 +134,7 @@ export default function Navbar() {
                   <Link
                     key={cat}
                     to={`/category/${cat.toLowerCase()}`}
-                    className="block py-2 px-3 rounded-md hover:bg-blue-100"
+                    className="block py-2 px-3 rounded-md hover:bg-blue-100 transition"
                     onClick={() => setIsOpen(false)}
                   >
                     {cat}
@@ -152,7 +149,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               to={link.path}
-              className="block py-2 px-3 rounded-md font-semibold hover:bg-blue-100"
+              className="block py-2 px-3 rounded-md font-semibold hover:bg-blue-100 transition"
               onClick={() => setIsOpen(false)}
             >
               {link.name}
@@ -162,8 +159,7 @@ export default function Navbar() {
           {/* Cart + Login */}
           <div className="flex items-center justify-between pt-3 border-t">
             <Link to="/cart" className="flex items-center gap-2 text-lg">
-              <FiShoppingCart />
-              Cart ({cartCount})
+              <FiShoppingCart /> Cart ({cartCount})
             </Link>
 
             <Link to="/login" className="flex items-center gap-1 text-lg">
