@@ -1,5 +1,5 @@
 // components/ProductListing.jsx
-import React, { useState } from "react";
+import React from "react";
 
 // Sample product data with real images
 const products = [
@@ -16,123 +16,30 @@ const products = [
 ];
 
 export default function ProductListing() {
-  const categories = ["All", "Electronics", "Fashion", "Home Appliances"];
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6;
-
-  // Filtering
-  const filtered = products.filter(
-    (p) =>
-      (selectedCategory === "All" || p.category === selectedCategory) &&
-      p.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Sorting
-  const sorted = [...filtered].sort((a, b) =>
-    sortOrder === "asc" ? a.price - b.price : b.price - a.price
-  );
-
-  // Pagination
-  const totalPages = Math.ceil(sorted.length / productsPerPage);
-  const start = (currentPage - 1) * productsPerPage;
-  const paginated = sorted.slice(start, start + productsPerPage);
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Sidebar */}
-        <div className="w-full lg:w-1/4">
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-2">Categories</h3>
-            <div className="flex flex-col gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setCurrentPage(1);
-                  }}
-                  className={`px-4 py-2 rounded-lg font-semibold transition text-left ${
-                    selectedCategory === cat
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Search</h3>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              placeholder="Search products..."
-              className="w-full px-4 py-2 border rounded-lg"
-            />
-          </div>
-        </div>
-
-        {/* Product Grid */}
-        <div className="w-full lg:w-3/4">
-          {/* Sorting */}
-          <div className="flex justify-end mb-6">
-            <select
-              className="px-4 py-2 rounded-lg border"
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
+    <div className="min-h-screen bg-gray-50 pt-24">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <h1 className="text-4xl font-bold mb-8">Products</h1>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="border rounded-lg p-4 shadow hover:shadow-lg transition bg-white"
             >
-              <option value="asc">Price: Low to High</option>
-              <option value="desc">Price: High to Low</option>
-            </select>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {paginated.map((product) => (
-              <div
-                key={product.id}
-                className="border rounded-lg p-4 shadow hover:shadow-xl transition transform hover:-translate-y-1"
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-48 w-full object-cover rounded mb-4"
-                />
-                <h3 className="text-lg font-semibold mb-1">{product.name}</h3>
-                <p className="text-gray-600 mb-2">{product.category}</p>
-                <p className="font-bold text-blue-600 text-lg">${product.price}</p>
-                <button className="mt-3 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition">
-                  Add to Cart
-                </button>
-              </div>
-            ))}
-          </div>
-
-          {/* Pagination */}
-          <div className="flex justify-center mt-8 gap-3 flex-wrap">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i + 1}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`px-4 py-2 rounded-lg font-semibold transition ${
-                  currentPage === i + 1
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {i + 1}
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-40 w-full object-cover rounded mb-3"
+              />
+              <h3 className="text-lg font-semibold mb-1">{product.name}</h3>
+              <p className="text-gray-600 mb-2 text-sm">{product.category}</p>
+              <p className="font-bold text-blue-600 text-lg mb-3">${product.price}</p>
+              <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition">
+                Add to Cart
               </button>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

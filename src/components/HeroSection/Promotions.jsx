@@ -18,7 +18,7 @@ export default function Promotions() {
         {promotions.map((promo) => (
           <div
             key={promo.id}
-            className="relative flex flex-col items-center p-6 text-center rounded-xl bg-gradient-to-br from-white to-gray-50 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 overflow-hidden group"
+            className="relative flex flex-col items-center p-6 text-center rounded-xl bg-linear-to-br from-white to-gray-50 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 overflow-hidden group"
           >
             {/* Animated Floating Background Circle */}
             <div className="absolute -top-12 -left-12 w-36 h-36 bg-blue-100 rounded-full opacity-20 blur-3xl animate-pulse-slow group-hover:opacity-40 transition duration-500"></div>
