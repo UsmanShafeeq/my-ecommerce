@@ -1,4 +1,4 @@
-// components/ProductListing.jsx
+// components/Products.jsx
 import React from "react";
 
 // Sample product data with real images
@@ -15,7 +15,10 @@ const products = [
   { id: 10, name: "Coffee Maker", category: "Home Appliances", price: 80, image: "https://images.unsplash.com/photo-1601042477471-8f5c71172ed7?auto=format&fit=crop&w=500&q=80" },
 ];
 
-export default function ProductListing() {
+export default function Products() {
+  console.log("✅ Products component is working!");
+  console.log(`📦 Total products loaded: ${products.length}`);
+  
   return (
     <div className="min-h-screen bg-gray-50 pt-24">
       <div className="max-w-7xl mx-auto px-4 py-12">
