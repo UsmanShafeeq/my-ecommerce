@@ -1,0 +1,137 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - staging
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # Lint and Test
+  lint-and-test:
+    runs-on: ubuntu-latest
+    name: Lint & Test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run tests (if available)
+        run: npm test --if-present
+        continue-on-error: true
+
+  # Build for different environments
+  build:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    name: Build
+    strategy:
+      matrix:
+        environment: [dev, staging, prod]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for ${{ matrix.environment }}
+        run: npm run build:${{ matrix.environment }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.environment }}
+          path: dist/
+          retention-days: 5
+
+  # Deploy to Production
+  deploy-prod:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download production build
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-prod
+          path: dist/
+
+      - name: Deploy to server
+        run: |
+          echo "Deploying to production..."
+          # Add your deployment command here
+          # Example: ssh user@prod-server 'cd /var/www/app && pull latest && build'
+
+  # Deploy to Staging
+  deploy-staging:
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy to Staging
+    environment: staging
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download staging build
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-staging
+          path: dist/
+
+      - name: Deploy to staging server
+        run: |
+          echo "Deploying to staging..."
+          # Add your deployment command here
+
+  # Code Quality Analysis (optional)
+  quality:
+    runs-on: ubuntu-latest
+    name: Code Quality
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run SonarQube analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        continue-on-error: true
