@@ -10,7 +10,7 @@ const promotions = [
 export default function Promotions() {
   return (
     <section className="my-12 px-4 md:px-12">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-600">
         Our Promotions
       </h2>
 
@@ -29,7 +29,7 @@ export default function Promotions() {
             </span>
 
             {/* Title */}
-            <h3 className="text-xl md:text-2xl font-bold mb-2 text-gray-800">
+            <h3 className="text-xl md:text-2xl font-bold mb-2 text-blue-600">
               {promo.title}
             </h3>
 

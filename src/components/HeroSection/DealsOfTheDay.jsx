@@ -39,7 +39,7 @@ const deals = [
 export default function DealsOfTheDay() {
   return (
     <div className="my-12 px-4 md:px-12">
-      <h2 className="text-3xl font-bold mb-8 text-center">Deals of the Day</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">Deals of the Day</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {deals.map((deal) => {
           const discountedPrice = (deal.price * (100 - deal.discount)) / 100;
@@ -60,7 +60,7 @@ export default function DealsOfTheDay() {
               />
               <div className="p-4 text-center">
                 <h3 className="font-semibold text-lg mb-2">{deal.name}</h3>
-                <p className="text-red-600 font-bold text-lg">
+                <p className="text-blue-600 font-bold text-lg">
                   ${discountedPrice.toFixed(2)}{" "}
                   <span className="line-through text-gray-400 text-sm">
                     ${deal.price.toFixed(2)}
